@@ -1,6 +1,12 @@
 # ASL-Alphabet Image Classification
 
-This small project contains approaches to classify letter/alphabet images that contain gestures of the American Sign Language (ASL). Deep Learning models are used with Keras, including CNNs defined from scratch, transfer learning with models pre-trained on ImageNet and autoencoders in combination with random forests.
+This small project contains approaches to classify letter/alphabet images that contain gestures of the American Sign Language (ASL). Deep Learning models are used with Keras, including (1) CNNs defined from scratch, (2) transfer learning with models pre-trained on ImageNet and (3) autoencoders in combination with random forests.
+
+Notes:
+
+- The project repository can be found here: [asl_alphabet_image_classification](https://github.com/mxagar/asl_alphabet_image_classification).
+- Some of the starter code and examples were taken from a [Datacamp](https://www.datacamp.com) guided project: [ASL Recognition with Deep Learning](https://app.datacamp.com/learn/projects/509).
+- :warning: This is an experimental project where some Keras functionalities related to CNNs are showcased; however, these are not systematically applied to find the optimum solution. The motivation and performance of the models is discussed in a dedicated [section](#discussion-on-the-used-models), and at the end a non-exhaustive list of [possible improvements](#next-steps-improvements) is provided.
 
 ## Table of Contents
 
@@ -15,6 +21,7 @@ This small project contains approaches to classify letter/alphabet images that c
     - [Autoencoder Compression + Random Forest](#autoencoder-compression--random-forest)
   - [Preliminary Conclusions](#preliminary-conclusions)
   - [Next Steps, Improvements](#next-steps-improvements)
+  - [Interesting Links](#interesting-links)
   - [Authorship](#authorship)
   - [Requirements](#requirements)
 
@@ -30,7 +37,11 @@ For this project, special symbols were ignored (i.e., `nothing`, `space`, `del`)
 - `test`: 15,000 observations (20%)
 - labels: 25 (`A-Z`)
 
-The dataset is well balanced: each character has around 2,400 observations in the `train` split and around 600 in the `test` split.
+The dataset is well balanced: each character has around 2,400 observations in the `train` split and around 600 in the `test` split. Additionally, the images require very little pre-processing:
+
+- Pixel values were mapped to `[0,1]`.
+- Images were converted into numpy arrays or tensors.
+- In the case of transfer learning, pixel values were scaled to the region in which the pre-trained model was fit into ImageNet.
 
 ## How to Use This
 
@@ -69,18 +80,49 @@ pip install -r requirements.txt
 
 ## Discussion on the Used Models
 
+As mentioned in the introduction, this is an experimental (and on-going) project in which I try some Keras functionalities related to CNNs on an *easy* dataset. The used models and their accuracy metric on the test dataset are the following:
+
+1. A from scratch defined and trained CNN model: `0.998`.
+2. A frozen VGG16 backbone with a fully connected classifier: `0.149`.
+3. An autoencoder from which the compressed representations are used to fit a random forest: `0,995`.
+
+If our goal is to define and train the most accurate model, the first model wins. In the following, notes about the motivation, definition, training and evaluation of each model are provided. Additionally, [possible improvements](#next-steps-improvements) are listed at the end.
+
 ### CNN from Scratch
+
+The model is rather simple: it consists of 4 convolution-pooling layers that increase the number of channels from `16` to `128` by reducing the activation map size until `3 x 3`. The final classifier consists of two fully connected layers with dropout in-between to control overfitting. It resembles the good old [LeNet](https://en.wikipedia.org/wiki/LeNet).
+
+The learning curves of the RMSProp optimization algorithm behaved nicely and the training stopped at epoch 12 due to early stopping on the validation split (0.2):
 
 ![From Scratch CNN: Learning Curves](./assets/cnn_scratch_learning_curves.jpg)
 
+The confusion matrix looks also very nice:
+
 ![From Scratch CNN: Confusion Matrix](./assets/confusion_matrix_scratch.jpg)
+
+The following images show 16 of the 27 / 15000 missclassified images:
 
 ![From Scratch CNN: Missclassifications](./assets/cnn_scratch_missclassifications.jpg)
 
-
 ### Fine-Tuning and Transfer Learning of ResNet50 and VGG16
 
+I tried two backbones or networks trained on [ImageNet](https://www.image-net.org):
+
+- [ResNet50](https://en.wikipedia.org/wiki/Residual_neural_network)
+- [VGG16](https://www.geeksforgeeks.org/vgg-16-cnn-model/)
+
+And I applied two techniques
+
+- Transfer learning, i.e., training of the appended classifier only, with weights of the pre-trained network frozen.
+- Fine-tuning: complete training of the network, starting with the pre-trained weights.
+
+My initial assumption was that ResNet50 with fine-tuning should be the best option, due to the specific image classes and the large dataset. However, it's the VGG16 with transfer learning the one that best performed &mdash; although the accuracy is very bad: `0.149` compared to the other models.
+
+In the following, the confusion matrix achieved with this approach:
+
 ![Transfer Learning: Confusion Matrix](./assets/confusion_matrix_transfer_learning.jpg)
+
+This model type definitely needs a better analysis of what's going on from my side.
 
 ### Autoencoder Compression + Random Forest
 
@@ -95,15 +137,20 @@ pip install -r requirements.txt
 
 ## Next Steps, Improvements
 
-- [ ] Try gray images. Enough informations should be there and we should
+- [ ] Try gray images. Enough information should be there and we could speed up the training & the inference, and improve the performance metrics.
+- [ ] Transfer learning/Fine-tuning: analyze what's going on.
 - [ ]
-- [ ]
+
+## Interesting Links
+
 
 
 ## Authorship
 
 Mikel Sagardia, 2022.  
 No guarantees.
+
+You are free to use this project, but please link it back to the original source.
 
 ## Requirements
 
