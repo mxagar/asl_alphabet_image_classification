@@ -1,6 +1,33 @@
 # ASL-Alphabet Image Classification
 
-This repository contains approaches to classify letter/alphabet images that contain gestures of the American Sign Language (ASL). Deep Learning models are used with Keras, including CNNs defined from scratch, ResNet50 with fine tuning and autoencoders in combination with random forests.
+This project contains approaches to classify letter/alphabet images that contain gestures of the American Sign Language (ASL). Deep Learning models are used with Keras, including CNNs defined from scratch, ResNet50 with fine tuning and autoencoders in combination with random forests.
 
 The original dataset can be downloaded from Kaggle: [asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet).
 
+![](./assets/)
+
+confusion_matrix_autoencoder_rf.jpeg
+asl_examples_labelled.jpg
+autoencoder_missclassifications.jpg
+autoencoder.jpg
+cnn_scratch_learning_curves.jpg
+cnn_scratch_missclassifications.jpg
+confusion_matrix_scratch.jpg
+confusion_matrix_transfer_learning.jpg
+
+## Authorship
+
+Mikel Sagardia, 2022.  
+No guarantees.
+
+### Requirements
+
+- Submit report as a PDF.
+- Deep learning model for any task we select, using the dataset of our choice.
+- Describe the dataset.
+- Explain main objectives: problem type, goals.
+- Describe briefly: data exploration, cleaning, feature engineering.
+- Variations of a deep learning model: at least 3; different hyperparameters, etc.
+- Explain model recommendation: choose explainability / accuracy?
+- Explain key findings.
+- Next steps: issues, improvements, etc.
