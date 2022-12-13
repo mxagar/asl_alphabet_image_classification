@@ -24,7 +24,6 @@ Notes:
   - [Preliminary Conclusions](#preliminary-conclusions)
   - [Next Steps, Improvements](#next-steps-improvements)
   - [Authorship](#authorship)
-  - [Requirements](#requirements)
 
 ## The Dataset
 
@@ -135,10 +134,10 @@ The used encoder architecture is very similar to the CNN model created from scra
 
 Once the autoencoder was trained, I used it to encode all the images to vectors of size `512`; then, I attached two classifiers:
 
-- A logistc regression, to provide some intepretability to the model choices.
+- A logistic regression, to provide some intepretability to the model choices.
 - A random forest, to be able to reach high accuracies.
 
-Both models were trained with a small grid search using cross-correlation (i.e., hyperparameter tuning). Unfortunately, the logistic regression was not able o converge, and the results of the best random forest are shown, which are close to the CNN model defined and trained from scratch:
+Both models were trained with a small grid search using cross-correlation (i.e., hyperparameter tuning). Unfortunately, the logistic regression was not able to converge, and the results of the best random forest are shown, which are close to the CNN model defined and trained from scratch:
 
 ![Autoencoder + Random Forest: Confusion Matrix](./assets/confusion_matrix_autoencoder_rf.jpeg)
 
@@ -148,13 +147,22 @@ The following figure shows 16 of the 77 / 15000 missclassified images:
 
 ## Preliminary Conclusions
 
+The preliminary tests indicate that the the CNN defined and trained from scratch outperforms the more complex models in terms of classification accuracy; the used architecture is similar to [LeNet](https://en.wikipedia.org/wiki/LeNet). That is probably because the dataset is very easy: small images with well-defined and balanced.
 
+It seems that an autoencoder which has an encoder with a similar architecture as the outperforming CNN is able to compress `~ 15x` the images preserving relevant information. At least, the random forest is able to achieve a similar performance using the encoded representations. Maybe that's an approach to introduce some intepretability to CNNs.
 
 ## Next Steps, Improvements
 
 - [ ] Try gray images. Enough information should be there and we could speed up the training & the inference, and improve the performance metrics.
-- [ ] Transfer learning/Fine-tuning: analyze what's going on.
-- [ ]
+- [ ] Transfer learning/Fine-tuning: analyze why it's not working.
+- [ ] Being a well balanced multiclass dataset, accuracy is not that bad of a choice; however, in general, we should consider other metrics:
+  - Precision: to optimize Type I error
+  - Recall: to optimize Type II error
+  - F1: harmonic mean of precision & recall
+  - [Matthews Correlation Coefficient (MCC)](https://towardsdatascience.com/the-best-classification-metric-youve-never-heard-of-the-matthews-correlation-coefficient-3bf50a2f3e9a)
+- [ ] Tray smaller compressed representations; where is the limit?
+- [ ] Try interpreting the choices of the autoencoder-based model.
+- [ ] Manifold learning of the compressed representations: T-SNE or similar.
 
 <!--
 ## Interesting Links
@@ -167,6 +175,7 @@ No guarantees.
 
 You are free to use this project, but please link it back to the original source.
 
+<!--
 ## Requirements
 
 - Submit report as a PDF.
@@ -178,3 +187,4 @@ You are free to use this project, but please link it back to the original source
 - Explain model recommendation: choose explainability / accuracy?
 - Explain key findings.
 - Next steps: issues, improvements, etc.
+-->
