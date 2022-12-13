@@ -2,6 +2,8 @@
 
 This small project contains approaches to classify letter/alphabet images that contain gestures of the American Sign Language (ASL). Deep Learning models are used with Keras, including (1) CNNs defined from scratch, (2) transfer learning with models pre-trained on ImageNet and (3) autoencoders in combination with random forests.
 
+**TLDR**: The CNN defined and trained from scratch reaches an accuracy of `0.998` on the test set! Probably, in part, because this is a very easy and clean dataset.
+
 Notes:
 
 - The project repository can be found here: [asl_alphabet_image_classification](https://github.com/mxagar/asl_alphabet_image_classification).
@@ -21,7 +23,6 @@ Notes:
     - [Autoencoder Compression + Random Forest](#autoencoder-compression--random-forest)
   - [Preliminary Conclusions](#preliminary-conclusions)
   - [Next Steps, Improvements](#next-steps-improvements)
-  - [Interesting Links](#interesting-links)
   - [Authorship](#authorship)
   - [Requirements](#requirements)
 
@@ -100,7 +101,7 @@ The confusion matrix looks also very nice:
 
 ![From Scratch CNN: Confusion Matrix](./assets/confusion_matrix_scratch.jpg)
 
-The following images show 16 of the 27 / 15000 missclassified images:
+The following figure shows 16 of the 27 / 15000 missclassified images:
 
 ![From Scratch CNN: Missclassifications](./assets/cnn_scratch_missclassifications.jpg)
 
@@ -118,7 +119,7 @@ And I applied two techniques
 
 My initial assumption was that ResNet50 with fine-tuning should be the best option, due to the specific image classes and the large dataset. However, it's the VGG16 with transfer learning the one that best performed &mdash; although the accuracy is very bad: `0.149` compared to the other models.
 
-In the following, the confusion matrix achieved with this approach:
+In the following, the confusion matrix achieved with this approach (a complete mess :sweat_smile:):
 
 ![Transfer Learning: Confusion Matrix](./assets/confusion_matrix_transfer_learning.jpg)
 
@@ -126,14 +127,28 @@ This model type definitely needs a better analysis of what's going on from my si
 
 ### Autoencoder Compression + Random Forest
 
+Autoencoders are able to compress data observations, i.e., images, to latent vectors. They achieve that with an encoder-decoder architecture which (1) reduces the dimensionality of the input sample to a bottleneck and then (2) expands it to obtain a reconstructed representation that is intended to be as close a possible to the input.
+
+The used encoder architecture is very similar to the CNN model created from scratch; the decoder expands the latent vector with transpose convolutions. The following is an examples of an original image and its reconstruction:
+
 ![Autoencoder: Reconstruction](./assets/autoencoder.jpg)
+
+Once the autoencoder was trained, I used it to encode all the images to vectors of size `512`; then, I attached two classifiers:
+
+- A logistc regression, to provide some intepretability to the model choices.
+- A random forest, to be able to reach high accuracies.
+
+Both models were trained with a small grid search using cross-correlation (i.e., hyperparameter tuning). Unfortunately, the logistic regression was not able o converge, and the results of the best random forest are shown, which are close to the CNN model defined and trained from scratch:
 
 ![Autoencoder + Random Forest: Confusion Matrix](./assets/confusion_matrix_autoencoder_rf.jpeg)
 
+The following figure shows 16 of the 77 / 15000 missclassified images:
+
 ![Autoencoder: Missclassifications](./assets/autoencoder_missclassifications.jpg)
 
-
 ## Preliminary Conclusions
+
+
 
 ## Next Steps, Improvements
 
@@ -141,9 +156,9 @@ This model type definitely needs a better analysis of what's going on from my si
 - [ ] Transfer learning/Fine-tuning: analyze what's going on.
 - [ ]
 
+<!--
 ## Interesting Links
-
-
+-->
 
 ## Authorship
 
