@@ -4,16 +4,25 @@ This project contains approaches to classify letter/alphabet images that contain
 
 The original dataset can be downloaded from Kaggle: [asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet).
 
-![](./assets/)
+![ASL Examples](./assets/asl_examples_labelled.jpg)
 
-confusion_matrix_autoencoder_rf.jpeg
-asl_examples_labelled.jpg
-autoencoder_missclassifications.jpg
-autoencoder.jpg
-cnn_scratch_learning_curves.jpg
-cnn_scratch_missclassifications.jpg
-confusion_matrix_scratch.jpg
-confusion_matrix_transfer_learning.jpg
+![Autoencoder + Random Forest: Confusion Matrix](./assets/confusion_matrix_autoencoder_rf.jpeg)
+
+![From Scratch CNN: Confusion Matrix](./assets/confusion_matrix_scratch.jpg)
+
+![Transfer Learning: Confusion Matrix](./assets/confusion_matrix_transfer_learning.jpg)
+
+![Autoencoder: Reconstruction](./assets/autoencoder.jpg)
+
+![Autoencoder: Missclassifications](./assets/autoencoder_missclassifications.jpg)
+
+![From Scratch CNN: Missclassifications](./assets/cnn_scratch_missclassifications.jpg)
+
+![From Scratch CNN: Learning Curves](./assets/cnn_scratch_learning_curves.jpg)
+
+
+
+
 
 ## Authorship
 
